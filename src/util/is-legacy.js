@@ -4,6 +4,7 @@ module.exports = {
     isLegacyValue
 };
 
+const valueKeysSet = new Set(["string_value", "number_value", "bool_value", "struct_value", "list_value", "null_value"]);
 
 /**
  * Checks if the given payload is in the legacy value format.
@@ -12,8 +13,6 @@ module.exports = {
  * @returns {boolean} True if the value is in legacy format, false otherwise
  */
 function isLegacyValue(payload) {
-    const valueKeysSet = new Set(["string_value", "number_value", "bool_value", "struct_value", "list_value", "null_value"]);
-
     return payload && typeof payload === "object" && Object.keys(payload).length === 1 && valueKeysSet.has(Object.keys(payload)[0]);
 }
 
@@ -41,9 +40,6 @@ function isLegacyValue(payload) {
  * @returns {boolean} True if the payload is in legacy struct format, false otherwise
  */
 function isLegacyStruct(payload) {
-    // Value types in a struct
-    const valueKeysSet = new Set(["string_value", "number_value", "bool_value", "struct_value", "list_value", "null_value"]);
-
     // If object has only one key and that key is "fields" which is an object
     if (payload && Object.keys(payload).length === 1 && payload.fields && typeof payload.fields === "object") {
         if (Array.isArray(payload.fields)) {
