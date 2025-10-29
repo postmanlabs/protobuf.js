@@ -492,7 +492,6 @@ wrappers[".google.protobuf.Timestamp"] = {
 
 wrappers[".google.protobuf.StringValue"] = {
     fromObject: function(object) {
-        // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
 
         if (isLegacyValueObject(object)) {
@@ -516,7 +515,6 @@ wrappers[".google.protobuf.StringValue"] = {
 
 wrappers[".google.protobuf.BoolValue"] = {
     fromObject: function(object) {
-        // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
 
         if (isLegacyValueObject(object)) {
@@ -530,7 +528,7 @@ wrappers[".google.protobuf.BoolValue"] = {
         return this.fromObject(object);
     },
     toObject: function(message, options) {
-        if (message && typeof message === "object" && message && message.value) {
+        if (message && typeof message === "object" && typeof message.value === "boolean") {
             return message.value;
         }
 
@@ -538,10 +536,8 @@ wrappers[".google.protobuf.BoolValue"] = {
     }
 };
 
-
 wrappers[".google.protobuf.BytesValue"] = {
     fromObject: function(object) {
-        // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
 
         if (isLegacyValueObject(object)) {
@@ -555,8 +551,8 @@ wrappers[".google.protobuf.BytesValue"] = {
         return this.fromObject(object);
     },
     toObject: function(message, options) {
-        if (message && typeof message === "object" && message && message.value) {
-            return message.value;
+        if (message && typeof message === "object" && message.value) {
+            return Buffer.from(message.value).toString("base64");
         }
 
         return this.toObject(message, options);
@@ -565,7 +561,6 @@ wrappers[".google.protobuf.BytesValue"] = {
 
 wrappers[".google.protobuf.DoubleValue"] = {
     fromObject: function(object) {
-        // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
 
         if (isLegacyValueObject(object)) {
@@ -579,18 +574,16 @@ wrappers[".google.protobuf.DoubleValue"] = {
         return this.fromObject(object);
     },
     toObject: function(message, options) {
-        if (message && typeof message === "object" && message && message.value) {
+        if (message && typeof message === "object" && message.value) {
             return message.value;
         }
 
         return this.toObject(message, options);
     }
 };
-
 
 wrappers[".google.protobuf.FloatValue"] = {
     fromObject: function(object) {
-        // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
 
         if (isLegacyValueObject(object)) {
@@ -604,18 +597,16 @@ wrappers[".google.protobuf.FloatValue"] = {
         return this.fromObject(object);
     },
     toObject: function(message, options) {
-        if (message && typeof message === "object" && message && message.value) {
+        if (message && typeof message === "object" && message.value) {
             return message.value;
         }
 
         return this.toObject(message, options);
     }
 };
-
 
 wrappers[".google.protobuf.Int32Value"] = {
     fromObject: function(object) {
-        // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
 
         if (isLegacyValueObject(object)) {
@@ -629,7 +620,7 @@ wrappers[".google.protobuf.Int32Value"] = {
         return this.fromObject(object);
     },
     toObject: function(message, options) {
-        if (message && typeof message === "object" && message && message.value) {
+        if (message && typeof message === "object" && message.value) {
             return message.value;
         }
 
@@ -637,10 +628,8 @@ wrappers[".google.protobuf.Int32Value"] = {
     }
 };
 
-
 wrappers[".google.protobuf.Int64Value"] = {
     fromObject: function(object) {
-        // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
 
         if (isLegacyValueObject(object)) {
@@ -654,8 +643,8 @@ wrappers[".google.protobuf.Int64Value"] = {
         return this.fromObject(object);
     },
     toObject: function(message, options) {
-        if (message && typeof message === "object" && message && message.value) {
-            return message.value;
+        if (message && typeof message === "object" && message.value) {
+            return util.Long.isLong(message.value) ? message.value.toString() : message.value;
         }
 
         return this.toObject(message, options);
@@ -664,7 +653,6 @@ wrappers[".google.protobuf.Int64Value"] = {
 
 wrappers[".google.protobuf.UInt32Value"] = {
     fromObject: function(object) {
-        // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
 
         if (isLegacyValueObject(object)) {
@@ -678,7 +666,7 @@ wrappers[".google.protobuf.UInt32Value"] = {
         return this.fromObject(object);
     },
     toObject: function(message, options) {
-        if (message && typeof message === "object" && message && message.value) {
+        if (message && typeof message === "object" && message.value) {
             return message.value;
         }
 
@@ -686,10 +674,8 @@ wrappers[".google.protobuf.UInt32Value"] = {
     }
 };
 
-
 wrappers[".google.protobuf.UInt64Value"] = {
     fromObject: function(object) {
-        // If already a Value instance, return as is
         if (object instanceof this.ctor) return object;
 
         if (isLegacyValueObject(object)) {
@@ -703,11 +689,20 @@ wrappers[".google.protobuf.UInt64Value"] = {
         return this.fromObject(object);
     },
     toObject: function(message, options) {
-        if (message && typeof message === "object" && message && message.value) {
-            return message.value;
+        if (message && typeof message === "object" && message.value) {
+            return util.Long.isLong(message.value) ? message.value.toString() : message.value;
         }
 
         return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.NullValue"] = {
+    fromObject: function() {
+        return "NULL_VALUE";
+    },
+    toObject: function() {
+        return null;
     }
 };
 

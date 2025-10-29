@@ -22,6 +22,7 @@ const wellKnownTypesSet = new Set([
     ".google.protobuf.Int64Value",
     ".google.protobuf.UInt32Value",
     ".google.protobuf.UInt64Value",
+    ".google.protobuf.NullValue",
 ]);
 
 /**
