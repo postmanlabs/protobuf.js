@@ -95,6 +95,16 @@ wrappers[".google.protobuf.Any"] = {
                 prefix = googleApi;
             }
             name = prefix + messageName;
+            
+            // Check if object is a primitive (string, number, boolean, null) and wrap it
+            if (object === null || typeof object !== "object") {
+                return {
+                    "@type": name,
+                    "value": object
+                };
+            }
+            
+            // For objects, add @type directly
             object["@type"] = name;
             return object;
         }
