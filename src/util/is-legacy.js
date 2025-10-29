@@ -1,7 +1,8 @@
 "use strict";
 module.exports = {
     isLegacyStruct,
-    isLegacyValue
+    isLegacyValue,
+    isLegacyValueObject
 };
 
 const valueKeysSet = new Set(["string_value", "number_value", "bool_value", "struct_value", "list_value", "null_value"]);
@@ -59,4 +60,13 @@ function isLegacyStruct(payload) {
     }
 
     return false;
+}
+
+/**
+ * 
+ * @param {*} payload 
+ * @returns 
+ */
+function isLegacyValueObject(payload) {
+    return payload && typeof payload === "object" && Object.keys(payload).length === 1 && Object.keys(payload)[0] === "value";
 }

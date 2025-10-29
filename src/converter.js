@@ -8,6 +8,22 @@ var converter = exports;
 var Enum = require("./enum"),
     util = require("./util");
 
+
+const wellKnownTypesSet = new Set([
+    ".google.protobuf.Timestamp",
+    ".google.protobuf.Duration",
+    ".google.protobuf.Value",
+    ".google.protobuf.StringValue",
+    ".google.protobuf.BoolValue",
+    ".google.protobuf.BytesValue",
+    ".google.protobuf.DoubleValue",
+    ".google.protobuf.FloatValue",
+    ".google.protobuf.Int32Value",
+    ".google.protobuf.Int64Value",
+    ".google.protobuf.UInt32Value",
+    ".google.protobuf.UInt64Value",
+]);
+
 /**
  * Generates a partial value fromObject conveter.
  * @param {Codegen} gen Codegen instance
@@ -41,9 +57,7 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
             } gen
             ("}");
         } else
-            if (field.resolvedType.fullName === ".google.protobuf.Duration" || field.resolvedType.fullName === ".google.protobuf.Timestamp" 
-                || field.resolvedType.fullName === ".google.protobuf.Value"
-            ) { gen
+            if (wellKnownTypesSet.has(field.resolvedType.fullName)) { gen
                 ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
             } else gen
                 ("if(typeof d%s!==\"object\")", prop)

@@ -8,7 +8,7 @@
 var wrappers = exports;
 
 var Message = require("./message");
-var { isLegacyValue, isLegacyStruct } = require("./util/is-legacy");
+var { isLegacyValue, isLegacyStruct, isLegacyValueObject } = require("./util/is-legacy");
 var util = require("./util");
 
 /**
@@ -489,3 +489,226 @@ wrappers[".google.protobuf.Timestamp"] = {
         return this.toObject(message, options);
     }
 };
+
+wrappers[".google.protobuf.StringValue"] = {
+    fromObject: function(object) {
+        // If already a Value instance, return as is
+        if (object instanceof this.ctor) return object;
+
+        if (isLegacyValueObject(object)) {
+            return this.create(object);
+        }
+
+        if (typeof object === "string") {
+            return this.create({ value: object });
+        }
+
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        if (message && typeof message === "object" && message && message.value) {
+            return message.value;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.BoolValue"] = {
+    fromObject: function(object) {
+        // If already a Value instance, return as is
+        if (object instanceof this.ctor) return object;
+
+        if (isLegacyValueObject(object)) {
+            return this.create(object);
+        }
+
+        if (typeof object === "boolean") {
+            return this.create({ value: object });
+        }
+
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        if (message && typeof message === "object" && message && message.value) {
+            return message.value;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+
+wrappers[".google.protobuf.BytesValue"] = {
+    fromObject: function(object) {
+        // If already a Value instance, return as is
+        if (object instanceof this.ctor) return object;
+
+        if (isLegacyValueObject(object)) {
+            return this.create(object);
+        }
+
+        if (typeof object === "string") {
+            return this.create({ value: object });
+        }
+
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        if (message && typeof message === "object" && message && message.value) {
+            return message.value;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.DoubleValue"] = {
+    fromObject: function(object) {
+        // If already a Value instance, return as is
+        if (object instanceof this.ctor) return object;
+
+        if (isLegacyValueObject(object)) {
+            return this.create(object);
+        }
+
+        if (typeof object === "number") {
+            return this.create({ value: object });
+        }
+
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        if (message && typeof message === "object" && message && message.value) {
+            return message.value;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+
+wrappers[".google.protobuf.FloatValue"] = {
+    fromObject: function(object) {
+        // If already a Value instance, return as is
+        if (object instanceof this.ctor) return object;
+
+        if (isLegacyValueObject(object)) {
+            return this.create(object);
+        }
+
+        if (typeof object === "number") {
+            return this.create({ value: object });
+        }
+
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        if (message && typeof message === "object" && message && message.value) {
+            return message.value;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+
+wrappers[".google.protobuf.Int32Value"] = {
+    fromObject: function(object) {
+        // If already a Value instance, return as is
+        if (object instanceof this.ctor) return object;
+
+        if (isLegacyValueObject(object)) {
+            return this.create(object);
+        }
+
+        if (typeof object === "number") {
+            return this.create({ value: object });
+        }
+
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        if (message && typeof message === "object" && message && message.value) {
+            return message.value;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+
+wrappers[".google.protobuf.Int64Value"] = {
+    fromObject: function(object) {
+        // If already a Value instance, return as is
+        if (object instanceof this.ctor) return object;
+
+        if (isLegacyValueObject(object)) {
+            return this.create(object);
+        }
+
+        if (typeof object === "string") {
+            return this.create({ value: object });
+        }
+
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        if (message && typeof message === "object" && message && message.value) {
+            return message.value;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+wrappers[".google.protobuf.UInt32Value"] = {
+    fromObject: function(object) {
+        // If already a Value instance, return as is
+        if (object instanceof this.ctor) return object;
+
+        if (isLegacyValueObject(object)) {
+            return this.create(object);
+        }
+
+        if (typeof object === "number") {
+            return this.create({ value: object });
+        }
+
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        if (message && typeof message === "object" && message && message.value) {
+            return message.value;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+
+wrappers[".google.protobuf.UInt64Value"] = {
+    fromObject: function(object) {
+        // If already a Value instance, return as is
+        if (object instanceof this.ctor) return object;
+
+        if (isLegacyValueObject(object)) {
+            return this.create(object);
+        }
+
+        if (typeof object === "string") {
+            return this.create({ value: object });
+        }
+
+        return this.fromObject(object);
+    },
+    toObject: function(message, options) {
+        if (message && typeof message === "object" && message && message.value) {
+            return message.value;
+        }
+
+        return this.toObject(message, options);
+    }
+};
+
+
