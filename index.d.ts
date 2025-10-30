@@ -1901,6 +1901,14 @@ export interface Constructor<T> extends Function {
 type Properties<T> = { [P in keyof T]?: T[P] };
 
 /**
+ * Checks if the given payload is in the legacy value format.
+ *
+ * @param payload The payload to check for legacy value format
+ * @returns True if the value is in legacy format, false otherwise
+ */
+export function isLegacyValue(payload: object): boolean;
+
+/**
  * Identifies where the payload for a struct is in the form of a legacy struct.
  * The legacy format is -
  *
@@ -1924,6 +1932,14 @@ type Properties<T> = { [P in keyof T]?: T[P] };
  * @returns True if the payload is in legacy struct format, false otherwise
  */
 export function isLegacyStruct(payload: object): boolean;
+
+/**
+ * Checks if the given payload is a legacy value object with a single "value" key.
+ *
+ * @param payload The payload to check for legacy value object format
+ * @returns True if the payload is a legacy value object, false otherwise
+ */
+export function isLegacyValueObject(payload: any): boolean;
 
 /**
  * Any compatible Buffer instance.
