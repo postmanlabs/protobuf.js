@@ -8,6 +8,22 @@ var converter = exports;
 var Enum = require("./enum"),
     util = require("./util");
 
+
+const wellKnownTypesSet = new Set([
+    ".google.protobuf.Timestamp",
+    ".google.protobuf.Duration",
+    ".google.protobuf.Value",
+    ".google.protobuf.StringValue",
+    ".google.protobuf.BoolValue",
+    ".google.protobuf.BytesValue",
+    ".google.protobuf.DoubleValue",
+    ".google.protobuf.FloatValue",
+    ".google.protobuf.Int32Value",
+    ".google.protobuf.Int64Value",
+    ".google.protobuf.UInt32Value",
+    ".google.protobuf.UInt64Value"
+]);
+
 /**
  * Generates a partial value fromObject conveter.
  * @param {Codegen} gen Codegen instance
@@ -21,29 +37,32 @@ function genValuePartial_fromObject(gen, field, fieldIndex, prop) {
     var defaultAlreadyEmitted = false;
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
-        if (field.resolvedType instanceof Enum) { gen
-            ("switch(d%s){", prop);
-            for (var values = field.resolvedType.values, keys = Object.keys(values), i = 0; i < keys.length; ++i) {
-                // enum unknown values passthrough
-                if (values[keys[i]] === field.typeDefault && !defaultAlreadyEmitted) { gen
-                    ("default:")
-                        ("if(typeof(d%s)===\"number\"){m%s=d%s;break}", prop, prop, prop);
-                    if (!field.repeated) gen // fallback to default value only for
-                                             // arrays, to avoid leaving holes.
-                        ("break");           // for non-repeated fields, just ignore
-                    defaultAlreadyEmitted = true;
-                }
-                gen
-                ("case%j:", keys[i])
-                ("case %i:", values[keys[i]])
-                    ("m%s=%j", prop, values[keys[i]])
-                    ("break");
-            } gen
-            ("}");
+        if (field.resolvedType instanceof Enum) {
+            // Special handling for google.protobuf.NullValue enum
+            if (field.resolvedType.fullName === ".google.protobuf.NullValue") { gen
+                ("m%s=\"NULL_VALUE\"", prop);
+            } else { gen
+                ("switch(d%s){", prop);
+                for (var values = field.resolvedType.values, keys = Object.keys(values), i = 0; i < keys.length; ++i) {
+                    // enum unknown values passthrough
+                    if (values[keys[i]] === field.typeDefault && !defaultAlreadyEmitted) { gen
+                        ("default:")
+                            ("if(typeof(d%s)===\"number\"){m%s=d%s;break}", prop, prop, prop);
+                        if (!field.repeated) gen // fallback to default value only for
+                                                 // arrays, to avoid leaving holes.
+                            ("break");           // for non-repeated fields, just ignore
+                        defaultAlreadyEmitted = true;
+                    }
+                    gen
+                    ("case%j:", keys[i])
+                    ("case %i:", values[keys[i]])
+                        ("m%s=%j", prop, values[keys[i]])
+                        ("break");
+                } gen
+                ("}");
+            }
         } else
-            if (field.resolvedType.fullName === ".google.protobuf.Duration" || field.resolvedType.fullName === ".google.protobuf.Timestamp" 
-                || field.resolvedType.fullName === ".google.protobuf.Value"
-            ) { gen
+            if (wellKnownTypesSet.has(field.resolvedType.fullName)) { gen
                 ("m%s=types[%i].fromObject(d%s)", prop, fieldIndex, prop);
             } else gen
                 ("if(typeof d%s!==\"object\")", prop)
@@ -168,9 +187,14 @@ converter.fromObject = function fromObject(mtype) {
 function genValuePartial_toObject(gen, field, fieldIndex, prop) {
     /* eslint-disable no-unexpected-multiline, block-scoped-var, no-redeclare */
     if (field.resolvedType) {
-        if (field.resolvedType instanceof Enum) gen
-            ("d%s=o.enums===String?(types[%i].values[m%s]===undefined?m%s:types[%i].values[m%s]):m%s", prop, fieldIndex, prop, prop, fieldIndex, prop, prop);
-        else gen
+        if (field.resolvedType instanceof Enum) {
+            // Special handling for google.protobuf.NullValue enum
+            if (field.resolvedType.fullName === ".google.protobuf.NullValue") { gen
+                ("d%s=null", prop);
+            } else { gen
+                ("d%s=o.enums===String?(types[%i].values[m%s]===undefined?m%s:types[%i].values[m%s]):m%s", prop, fieldIndex, prop, prop, fieldIndex, prop, prop);
+            }
+        } else gen
             ("d%s=types[%i].toObject(m%s,o)", prop, fieldIndex, prop);
     } else {
         var isUnsigned = false;
