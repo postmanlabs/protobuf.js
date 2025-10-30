@@ -515,7 +515,7 @@ wrappers[".google.protobuf.StringValue"] = {
         return this.fromObject(object);
     },
     toObject: function(message, options) {
-        if (message && typeof message === "object" && message && message.value) {
+        if (message && typeof message === "object" && typeof message.value === "string") {
             return message.value;
         }
 
