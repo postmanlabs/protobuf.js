@@ -9,7 +9,7 @@ const valueKeysSet = new Set(["string_value", "number_value", "bool_value", "str
 
 /**
  * Checks if the given payload is in the legacy value format.
- * 
+ *
  * @param {object} payload The payload to check for legacy value format
  * @returns {boolean} True if the value is in legacy format, false otherwise
  */
@@ -63,9 +63,10 @@ function isLegacyStruct(payload) {
 }
 
 /**
- * 
- * @param {*} payload 
- * @returns 
+ * Checks if the given payload is a legacy value object with a single "value" key.
+ *
+ * @param {*} payload The payload to check for legacy value object format
+ * @returns {boolean} True if the payload is a legacy value object, false otherwise
  */
 function isLegacyValueObject(payload) {
     return payload && typeof payload === "object" && Object.keys(payload).length === 1 && Object.keys(payload)[0] === "value";

@@ -95,7 +95,7 @@ wrappers[".google.protobuf.Any"] = {
                 prefix = googleApi;
             }
             name = prefix + messageName;
-            
+
             // Check if object is a primitive (string, number, boolean, null) and wrap it
             if (object === null || typeof object !== "object") {
                 return {
@@ -103,7 +103,7 @@ wrappers[".google.protobuf.Any"] = {
                     "value": object
                 };
             }
-            
+
             // For objects, add @type directly
             object["@type"] = name;
             return object;
@@ -706,14 +706,3 @@ wrappers[".google.protobuf.UInt64Value"] = {
         return this.toObject(message, options);
     }
 };
-
-wrappers[".google.protobuf.NullValue"] = {
-    fromObject: function() {
-        return "NULL_VALUE";
-    },
-    toObject: function() {
-        return null;
-    }
-};
-
-
