@@ -164,10 +164,14 @@ converter.fromObject = function fromObject(mtype) {
 
         // Non-repeated fields
         } else {
-            if (!(field.resolvedType instanceof Enum)) gen // no need to test for null/undefined if an enum (uses switch)
+            // Check for null/undefined for all fields except regular enums (which use switch).
+            // NullValue is special-cased to direct assignment, so it needs the null check too.
+            var needsNullCheck = !(field.resolvedType instanceof Enum) ||
+                (field.resolvedType && field.resolvedType.fullName === ".google.protobuf.NullValue");
+            if (needsNullCheck) gen
     ("if(d%s!=null){", prop); // !== undefined && !== null
         genValuePartial_fromObject(gen, field, /* not sorted */ i, prop);
-            if (!(field.resolvedType instanceof Enum)) gen
+            if (needsNullCheck) gen
     ("}");
         }
     } return gen
